@@ -1,3 +1,5 @@
+
+
 'use strict';
 
 let leftImageElement = document.getElementById('left');
@@ -58,7 +60,7 @@ function renderThreeImages() {
     leftImage = randomIndex();
     centerImage = randomIndex();
     rightImage = randomIndex();
-    while (rightImage === leftImage || leftImage === centerImage || centerImage === rightImage) {
+    while (rightImage === leftImage && leftImage === centerImage && centerImage === rightImage) {
 
     }
     leftImageElement.src = Idea.allImages[leftImage].source;
@@ -94,21 +96,23 @@ function handleUserClick(cli) {
 
     }
     else {
-        let parent= document.getElementById('images');
-
+        // let parent= document.getElementById('images');
+        
         let button=document.getElementById('bo');
-        button.addEventListener('onclick', showResult );
-        function showResult(){
+        button.addEventListener('onclick', show );
+        function show(){
 
             let list1 = document.getElementById('list');
             let ideaReault;
-        for (let i = 0; i <= Idea.allImages.length; i++) {
-            ideaReault = document.createElement('li');
-            list1.appendChild(ideaReault);
-            ideaReault.textContent = `${Idea.allImages[i].name} had ${Idea.allImages[i].vote} votes, and it was seen `
+            for (let i = 0; i < Idea.allImages.length; i++) {
+                ideaReault = document.createElement('li');
+                list1.appendChild(ideaReault);
+                ideaReault.textContent = `${Idea.allImages[i].name} had ${Idea.allImages[i].vote} votes, and it was seen `
+            }
+            
+            images.removeEventListener('click', handleUserClick);
         }
-         }
-           images.removeEventListener('click', handleUserClick);
+        show();
 
     }
 
