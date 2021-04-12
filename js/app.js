@@ -98,8 +98,11 @@ function handleUserClick(cli) {
         renderThreeImages();
 
     }
+
+
     else {
-        // let parent= document.getElementById('images');
+
+        
         images.removeEventListener('click', handleUserClick);
         
         let button=document.getElementById('bo');
