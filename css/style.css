@@ -1,0 +1,32 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Dancing Script', cursive;
+
+}
+header{
+    padding: 25px;
+    height: 200px;
+}
+
+h1{
+    position: relative;
+    left: 200px;
+    top: -150px;
+}
+#pra1{
+position: relative;
+left: 350px;
+}
+#images{
+    position: relative;
+    left: 350px;
+}
+#list{
+    position: relative;
+    left: 100px;
+    top: -400px;
+}
+#pra2{
+    position: relative;
+    left:350px;
+}
