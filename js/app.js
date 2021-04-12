@@ -22,7 +22,7 @@ function Idea(name, source) {
     this.name = name;
     this.source = source;
     this.vote = 0;
-    this.showen = 0;
+    this.shown = 0;
     Idea.allImages.push(this)
 }
 
@@ -60,13 +60,16 @@ function renderThreeImages() {
     leftImage = randomIndex();
     centerImage = randomIndex();
     rightImage = randomIndex();
-    while (rightImage === leftImage && leftImage === centerImage && centerImage === rightImage) {
+    while (rightImage === leftImage || leftImage === centerImage || centerImage === rightImage) {
 
     }
     leftImageElement.src = Idea.allImages[leftImage].source;
     centerImageElement.src = Idea.allImages[centerImage].source;
     rightImageElement.src = Idea.allImages[rightImage].source;
     // console.log(centerImageElement);
+     leftImageElement.textContent= Idea.allImages[leftImage].shown++;
+     centerImageElement.textContent= Idea.allImages[centerImage].shown++;
+     rightImageElement.textContent= Idea.allImages[rightImage].shown++;
 
 }
 renderThreeImages();
@@ -97,25 +100,24 @@ function handleUserClick(cli) {
     }
     else {
         // let parent= document.getElementById('images');
+        images.removeEventListener('click', handleUserClick);
         
         let button=document.getElementById('bo');
-        button.addEventListener('onclick', show );
+        button.addEventListener('click', show );
+        
+        let list1 = document.getElementById('list');
+        let ideaReault;
         function show(){
 
-            let list1 = document.getElementById('list');
-            let ideaReault;
             for (let i = 0; i < Idea.allImages.length; i++) {
                 ideaReault = document.createElement('li');
                 list1.appendChild(ideaReault);
-                ideaReault.textContent = `${Idea.allImages[i].name} had ${Idea.allImages[i].vote} votes, and it was seen `
+                ideaReault.textContent = `${Idea.allImages[i].name} had ${Idea.allImages[i].vote} votes, and it was seen ${Idea.allImages[i].shown}`
+                show();
             }
             
-            images.removeEventListener('click', handleUserClick);
         }
-        show();
 
     }
-
-
 
 }
