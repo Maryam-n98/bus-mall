@@ -15,17 +15,23 @@ h1{
 }
 #pra1{
 position: relative;
-left: 290px;
+left: 350px;
 }
 #images{
     position: relative;
-    left: 290px;
+    left: 350px;
 }
 #list{
     position: relative;
-    top: -300px;
+    top: -280px;
+margin-left: 20px;
 }
 #pra2{
     position: relative;
-    left:290px;
+    left:350px;
+}
+#button{
+    position: relative;
+    left: 350px;
+    top: 10px;
 }
