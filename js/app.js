@@ -1,7 +1,7 @@
 
 
 'use strict';
-
+let divImg= document.getElementById('images');
 let leftImageElement = document.getElementById('left');
 let centerImageElement = document.getElementById('center');
 let rightImageElement = document.getElementById('right');
@@ -61,20 +61,23 @@ function renderThreeImages() {
     centerImage = randomIndex();
     rightImage = randomIndex();
     while (rightImage === leftImage || leftImage === centerImage || centerImage === rightImage) {
-
+        leftImage = randomIndex();
+        centerImage = randomIndex();
+    
+            
     }
     leftImageElement.src = Idea.allImages[leftImage].source;
+     Idea.allImages[leftImage].shown++;
     centerImageElement.src = Idea.allImages[centerImage].source;
+     Idea.allImages[centerImage].shown++;
     rightImageElement.src = Idea.allImages[rightImage].source;
+     Idea.allImages[rightImage].shown++;
     // console.log(centerImageElement);
-     leftImageElement.textContent= Idea.allImages[leftImage].shown++;
-     centerImageElement.textContent= Idea.allImages[centerImage].shown++;
-     rightImageElement.textContent= Idea.allImages[rightImage].shown++;
 
 }
 renderThreeImages();
 
-images.addEventListener('click', handleUserClick);
+divImg.addEventListener('click', handleUserClick);
 
 function handleUserClick(cli) {
     // console.log(cli.target.id);
@@ -91,8 +94,12 @@ function handleUserClick(cli) {
             Idea.allImages[centerImage].vote++
 
         }
-        else {
+        else if(cli.target.id==='right') {
             Idea.allImages[rightImage].vote++
+        }
+        else{
+            alert('only click in the images')
+            userAttempt--;
         }
         //  console.log(Idea.allImages);
         renderThreeImages();
@@ -103,23 +110,24 @@ function handleUserClick(cli) {
     else {
 
         
-        images.removeEventListener('click', handleUserClick);
         
-        let button=document.getElementById('bo');
-        button.addEventListener('click', show );
         
         let list1 = document.getElementById('list');
+        let button=document.getElementById('button');
+          button.addEventListener('click', show );
+          button.hidden=false;
         let ideaReault;
         function show(){
-
+            
             for (let i = 0; i < Idea.allImages.length; i++) {
                 ideaReault = document.createElement('li');
                 list1.appendChild(ideaReault);
                 ideaReault.textContent = `${Idea.allImages[i].name} had ${Idea.allImages[i].vote} votes, and it was seen ${Idea.allImages[i].shown}`
-                show();
+                // show();
             }
             
         }
+        divImg.removeEventListener('click', handleUserClick);
 
     }
 
