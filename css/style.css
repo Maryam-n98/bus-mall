@@ -3,30 +3,39 @@
     font-family: 'Dancing Script', cursive;
 
 }
+body{
+    background-color: #f4eeedd0;
+}
 header{
     padding: 25px;
     height: 200px;
+    background-color: #f4eeed;
+
 }
 
 h1{
     position: relative;
     left: 200px;
     top: -150px;
+    color: #999b84;
 }
 #pra1{
 position: relative;
 left: 350px;
+color: #999b84;
 }
 #images{
     position: relative;
     left: 350px;
 }
 #list{
+    color: #999b84;
     position: relative;
     top: -280px;
 margin-left: 20px;
 }
 #pra2{
+    color: #999b84;
     position: relative;
     left:350px;
 }
@@ -34,4 +43,9 @@ margin-left: 20px;
     position: relative;
     left: 350px;
     top: 10px;
+    background-color: #d8ac9c;
+}
+footer{
+    color: #d8ac9c;
+
 }

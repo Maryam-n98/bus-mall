@@ -1,7 +1,7 @@
 
 
 'use strict';
-let divImg= document.getElementById('images');
+let divImg = document.getElementById('images');
 let leftImageElement = document.getElementById('left');
 let centerImageElement = document.getElementById('center');
 let rightImageElement = document.getElementById('right');
@@ -18,16 +18,21 @@ let leftImage;
 let centerImage;
 let rightImage;
 
+let nameArr = [];
+let voteArr = [];
+let shownArr = [];
+
 function Idea(name, source) {
     this.name = name;
     this.source = source;
     this.vote = 0;
     this.shown = 0;
     Idea.allImages.push(this)
+
+    nameArr.push(this.name);
 }
 
 Idea.allImages = [];
-
 new Idea('Bag', 'img/bag.jpg');
 new Idea('Banan ', 'img/banana.jpg');
 new Idea('Bathroom', 'img/bathroom.jpg');
@@ -55,26 +60,47 @@ function randomIndex() {
 
 }
 // console.log(randomIndex());
+let renderArr = [];
 
 function renderThreeImages() {
     leftImage = randomIndex();
     centerImage = randomIndex();
     rightImage = randomIndex();
-    while (rightImage === leftImage || leftImage === centerImage || centerImage === rightImage) {
+
+
+    while (rightImage === leftImage || leftImage === centerImage || centerImage === rightImage || renderArr.includes(rightImage) || renderArr.includes(leftImage) || renderArr.includes(centerImage)) {
+        // for (let i=0; i<= 3; i++){
+
+        //     if (renderArr[i].find(leftImage,rightImage,centerImage)){
+        //         rightImage = randomIndex();
+        //         leftImage = randomIndex();
+        //         centerImage = randomIndex();
+        //     }else{
+        //         rightImage = randomIndex();
+        //         leftImage = randomIndex();
+        //         centerImage = randomIndex();
+        //     }
+        // }
+        rightImage = randomIndex();
         leftImage = randomIndex();
         centerImage = randomIndex();
-    
-            
-    }
-    leftImageElement.src = Idea.allImages[leftImage].source;
-     Idea.allImages[leftImage].shown++;
-    centerImageElement.src = Idea.allImages[centerImage].source;
-     Idea.allImages[centerImage].shown++;
-    rightImageElement.src = Idea.allImages[rightImage].source;
-     Idea.allImages[rightImage].shown++;
-    // console.log(centerImageElement);
 
+    }
+
+    leftImageElement.src = Idea.allImages[leftImage].source;
+    Idea.allImages[leftImage].shown++;
+    centerImageElement.src = Idea.allImages[centerImage].source;
+    Idea.allImages[centerImage].shown++;
+    rightImageElement.src = Idea.allImages[rightImage].source;
+    Idea.allImages[rightImage].shown++;
+    console.log(centerImageElement);
+
+    renderArr = [];
+    renderArr.push(leftImage);
+    renderArr.push(rightImage);
+    renderArr.push(centerImage);
 }
+console.log(renderArr);
 renderThreeImages();
 
 divImg.addEventListener('click', handleUserClick);
@@ -94,10 +120,10 @@ function handleUserClick(cli) {
             Idea.allImages[centerImage].vote++
 
         }
-        else if(cli.target.id==='right') {
+        else if (cli.target.id === 'right') {
             Idea.allImages[rightImage].vote++
         }
-        else{
+        else {
             alert('only click in the images')
             userAttempt--;
         }
@@ -109,26 +135,74 @@ function handleUserClick(cli) {
 
     else {
 
-        
-        
-        
+
+
+
         let list1 = document.getElementById('list');
-        let button=document.getElementById('button');
-          button.addEventListener('click', show );
-          button.hidden=false;
+        let button = document.getElementById('button');
+        button.addEventListener('click', show);
+        button.hidden = false;
         let ideaReault;
-        function show(){
-            
+
+        for (let i = 0; i < Idea.allImages.length; i++) {
+
+            voteArr.push(Idea.allImages[i].vote)
+
+            shownArr.push(Idea.allImages[i].shown)
+        }
+        function show() {
+
             for (let i = 0; i < Idea.allImages.length; i++) {
                 ideaReault = document.createElement('li');
                 list1.appendChild(ideaReault);
                 ideaReault.textContent = `${Idea.allImages[i].name} had ${Idea.allImages[i].vote} votes, and it was seen ${Idea.allImages[i].shown}`
                 // show();
             }
-            
+            console.log(shownArr);
+            console.log(voteArr);
         }
         divImg.removeEventListener('click', handleUserClick);
+        chart();
 
     }
+
+}
+
+function chart() {
+    let ctx = document.getElementById('myChart').getContext('2d');
+
+    let chart = new Chart(ctx, {
+        type: 'bar',
+
+        data: {
+            labels: nameArr,
+
+            datasets: [
+                {
+                    label: 'Idea votes',
+                    data: voteArr,
+                    backgroundColor: [
+
+                        '#d8ac9c'
+
+                    ],
+
+                    borderWidth: 1
+                },
+
+                {
+                    label: 'Idea shown',
+                    data: shownArr,
+                    backgroundColor: [
+                        '#efd9d1'
+                    ],
+
+                    borderWidth: 1
+                }
+
+            ]
+        },
+        options: {}
+    });
 
 }
