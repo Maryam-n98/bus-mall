@@ -28,11 +28,29 @@ function Idea(name, source) {
     this.vote = 0;
     this.shown = 0;
     Idea.allImages.push(this)
-
     nameArr.push(this.name);
 }
+Idea.allImages=[];
 
-Idea.allImages = [];
+function updateStorage() {
+    let stringArr=JSON.stringify(Idea.allImages);
+    console.log(Idea.allImages);
+    console.log(stringArr);
+    localStorage.setItem('Idea', stringArr);
+}
+
+function allIdea(){
+    let data2= localStorage.getItem('Idea');
+    let allData=JSON.parse(data2);
+    console.log(data2);
+    console.log(allData);
+    if (allData !==null){
+        Idea.allImages=allData;
+    }
+    // renderThreeImages();    
+}
+
+// Idea.allImages = [];
 new Idea('Bag', 'img/bag.jpg');
 new Idea('Banan ', 'img/banana.jpg');
 new Idea('Bathroom', 'img/bathroom.jpg');
@@ -57,7 +75,7 @@ new Idea('Wine glass', 'img/wine-glass.jpg');
 // console.log(Idea.allImages);
 function randomIndex() {
     return Math.floor(Math.random() * Idea.allImages.length);
-
+    
 }
 // console.log(randomIndex());
 let renderArr = [];
@@ -66,92 +84,93 @@ function renderThreeImages() {
     leftImage = randomIndex();
     centerImage = randomIndex();
     rightImage = randomIndex();
-
-
+    
+    
     while (rightImage === leftImage || leftImage === centerImage || centerImage === rightImage || renderArr.includes(rightImage) || renderArr.includes(leftImage) || renderArr.includes(centerImage)) {
         // for (let i=0; i<= 3; i++){
-
-        //     if (renderArr[i].find(leftImage,rightImage,centerImage)){
-        //         rightImage = randomIndex();
-        //         leftImage = randomIndex();
-        //         centerImage = randomIndex();
-        //     }else{
-        //         rightImage = randomIndex();
-        //         leftImage = randomIndex();
-        //         centerImage = randomIndex();
-        //     }
-        // }
-        rightImage = randomIndex();
-        leftImage = randomIndex();
-        centerImage = randomIndex();
-
+            
+            //     if (renderArr[i].find(leftImage,rightImage,centerImage)){
+                //         rightImage = randomIndex();
+                //         leftImage = randomIndex();
+                //         centerImage = randomIndex();
+                //     }else{
+                    //         rightImage = randomIndex();
+                    //         leftImage = randomIndex();
+                    //         centerImage = randomIndex();
+                    //     }
+                    // }
+                    rightImage = randomIndex();
+                    leftImage = randomIndex();
+                    centerImage = randomIndex();
+                    
+                }
+                
+                leftImageElement.src = Idea.allImages[leftImage].source;
+                Idea.allImages[leftImage].shown++;
+                centerImageElement.src = Idea.allImages[centerImage].source;
+                Idea.allImages[centerImage].shown++;
+                rightImageElement.src = Idea.allImages[rightImage].source;
+                Idea.allImages[rightImage].shown++;
+                console.log(centerImageElement);
+                
+                renderArr = [];
+                renderArr.push(leftImage);
+                renderArr.push(rightImage);
+                renderArr.push(centerImage);
+            }
+            console.log(renderArr);
+            renderThreeImages();
+            
+            divImg.addEventListener('click', handleUserClick);
+            
+            function handleUserClick(cli) {
+                // console.log(cli.target.id);
+                userAttempt++;
+                
+                console.log(userAttempt);
+                
+                if (userAttempt <= limitedAttempt) {
+                    if (cli.target.id === 'left') {
+                        Idea.allImages[leftImage].vote++;
+                        
+                    }
+                    else if (cli.target.id === 'center') {
+                        Idea.allImages[centerImage].vote++
+                        
+                    }
+                    else if (cli.target.id === 'right') {
+                        Idea.allImages[rightImage].vote++
+                    }
+                    else {
+                        alert('only click in the images')
+                        userAttempt--;
+                    }
+                    //  console.log(Idea.allImages);
+                    updateStorage(); 
+                    renderThreeImages();
+                    
     }
-
-    leftImageElement.src = Idea.allImages[leftImage].source;
-    Idea.allImages[leftImage].shown++;
-    centerImageElement.src = Idea.allImages[centerImage].source;
-    Idea.allImages[centerImage].shown++;
-    rightImageElement.src = Idea.allImages[rightImage].source;
-    Idea.allImages[rightImage].shown++;
-    console.log(centerImageElement);
-
-    renderArr = [];
-    renderArr.push(leftImage);
-    renderArr.push(rightImage);
-    renderArr.push(centerImage);
-}
-console.log(renderArr);
-renderThreeImages();
-
-divImg.addEventListener('click', handleUserClick);
-
-function handleUserClick(cli) {
-    // console.log(cli.target.id);
-    userAttempt++;
-
-    console.log(userAttempt);
-
-    if (userAttempt <= limitedAttempt) {
-        if (cli.target.id === 'left') {
-            Idea.allImages[leftImage].vote++;
-
-        }
-        else if (cli.target.id === 'center') {
-            Idea.allImages[centerImage].vote++
-
-        }
-        else if (cli.target.id === 'right') {
-            Idea.allImages[rightImage].vote++
-        }
-        else {
-            alert('only click in the images')
-            userAttempt--;
-        }
-        //  console.log(Idea.allImages);
-        renderThreeImages();
-
-    }
-
-
+    
+    
     else {
-
-
-
-
+        
+        
+        
+        
         let list1 = document.getElementById('list');
         let button = document.getElementById('button');
         button.addEventListener('click', show);
         button.hidden = false;
         let ideaReault;
-
+        
         for (let i = 0; i < Idea.allImages.length; i++) {
-
+            
             voteArr.push(Idea.allImages[i].vote)
-
+            
             shownArr.push(Idea.allImages[i].shown)
         }
         function show() {
-
+            
             for (let i = 0; i < Idea.allImages.length; i++) {
                 ideaReault = document.createElement('li');
                 list1.appendChild(ideaReault);
@@ -163,20 +182,20 @@ function handleUserClick(cli) {
         }
         divImg.removeEventListener('click', handleUserClick);
         chart();
-
+        
     }
-
+    
 }
-
+allIdea();
 function chart() {
     let ctx = document.getElementById('myChart').getContext('2d');
-
+    
     let chart = new Chart(ctx, {
         type: 'bar',
-
+        
         data: {
             labels: nameArr,
-
+            
             datasets: [
                 {
                     label: 'Idea votes',
@@ -184,25 +203,25 @@ function chart() {
                     backgroundColor: [
 
                         '#d8ac9c'
-
+                        
                     ],
-
+                    
                     borderWidth: 1
                 },
-
+                
                 {
                     label: 'Idea shown',
                     data: shownArr,
                     backgroundColor: [
                         '#efd9d1'
                     ],
-
+                    
                     borderWidth: 1
                 }
-
+                
             ]
         },
         options: {}
     });
-
+    
 }
